@@ -1,2 +1,2 @@
 # dejavue
-Boilerplate for fullstack web app with static rendering
+Boilerplate for fullstack web app with SSR
