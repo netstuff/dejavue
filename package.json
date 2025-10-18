@@ -1,0 +1,17 @@
+{
+  "name": "dejavue",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A single-app fullstack boilerplate with SSR.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@inertiajs/vue3": "^2.2.8",
+    "@types/node": "^24.8.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "vite": "^7.1.10",
+    "vue": "^3.5.22"
+  }
+}
