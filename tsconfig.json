@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [],
+  "compilerOptions": {
+    "baseUrl": "./dejavue/static/spa/",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}

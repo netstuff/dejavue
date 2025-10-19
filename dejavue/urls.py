@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dejavue.views import index
+from dejavue.views import index, gallery
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
+    path('gallery/', gallery),
 ]
