@@ -1,10 +1,14 @@
 {
   "files": [],
-  "references": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+  ],
   "compilerOptions": {
-    "baseUrl": "./dejavue/static/spa/",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./frontend/*"]
     }
   }
 }
