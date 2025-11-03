@@ -2,6 +2,8 @@
 import { computed, ref } from "vue";
 import { Link } from '@inertiajs/vue3';
 
+import InputNumber from 'primevue/inputnumber';
+
 defineProps(['name']);
 
 const count = ref(0);
@@ -33,9 +35,13 @@ const rocketTop = computed(() => -count.value * 10 + 'px');
       <a href="https://vuejs.org" target="_blank">
         <img src="https://es.vuejs.org/images/logo.png" width="64px" />
       </a>
+      <span class="plus">+</span>
+      <a href="https://primevue.org">
+        <img src="https://i2.wp.com/www.primefaces.org/wp-content/uploads/2019/12/primevue-logo.png?ssl=1" width="64px" />
+      </a>
     </div>
     <div class="counter">
-      <input type="number" min="0" max="30" v-model="count" />
+      <InputNumber  min="0" max="30" v-model="count" showButtons />
     </div>
   </main>
   <footer>
@@ -266,5 +272,9 @@ footer {
 }
 a[href].active {
   text-decoration: none;
+}
+span.plus {
+  font-size: 6em;
+  color: #34495E;
 }
 </style>

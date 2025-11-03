@@ -6,7 +6,10 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   root: resolve('./dejavue/static/spa'),
   base: '/static/',
-  plugins: [vue(), tailwindcss()],
+  plugins: [
+    vue(),
+    tailwindcss(),
+  ],
   build: {
     outDir: resolve('./dejavue/static/dist'),
     assetsDir: '',
