@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  root: resolve('./dejavue/static/spa'),
+  root: resolve('./frontend'),
   base: '/static/',
   plugins: [
     vue(),
@@ -17,7 +17,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       // Overwrite default .html entry to main.ts in the static directory
-      input: resolve('./dejavue/static/spa/main.ts'),
+      input: resolve('./frontend/main.ts'),
     },
   },
 });
