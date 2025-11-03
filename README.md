@@ -1,5 +1,5 @@
 # Dejavue
-Boilerplate for fullstack web app with SSR
+Django + Vue boilerplate for fullstack monolith with SSR
 
 
 ## Installation
