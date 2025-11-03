@@ -8,14 +8,17 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
     "@inertiajs/vue3": "^2.2.8",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-vue": "^6.0.1",
+    "reka-ui": "^2.6.0",
     "tailwindcss": "^4.1.14",
     "vite": "^7.1.10",
     "vue": "^3.5.22"
   },
   "devDependencies": {
-    "@types/node": "^24.8.1"
+    "@types/node": "^24.8.1",
+    "unplugin-vue-components": "^30.0.0"
   }
 }

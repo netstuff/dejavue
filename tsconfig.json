@@ -2,7 +2,7 @@
   "files": [],
   "references": [],
   "compilerOptions": {
-    "baseUrl": "./dejavue/static/spa/",
+    "baseUrl": "./frontend/",
     "paths": {
       "@/*": ["./*"]
     }
