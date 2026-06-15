@@ -9,10 +9,25 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import pdb
 
 import os
 import re
+from enum import Enum
+from logging import getLogger
 from pathlib import Path
+from typing import Literal
+
+logger = getLogger(__name__)
+
+
+class Environment(str, Enum):
+    """Environment types for the application."""
+
+    PRODUCTION = 'production'
+    DEVELOPMENT = 'development'
+    TEST = 'test'
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SETTINGS_DIR = Path(__file__).resolve().parent
@@ -23,13 +38,15 @@ BASE_DIR = SETTINGS_DIR.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uefut4+%i$4!bg(l3grw(eg_w12&8#2w$*=aiopsh8ujysd&em'
+DEFAULT_SECRET = 'django-insecure-secret'
+SECRET_KEY = os.getenv('SECRET_KEY', DEFAULT_SECRET)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ENVIROMENT: Environment = Environment[os.getenv('ENV', 'development').upper()]
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -42,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_vite',
     'inertia',
+    'dejavue',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +142,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -131,23 +153,30 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Vite settings
-DJANGO_VITE_ASSETS_PATH = SETTINGS_DIR / "static" / "dist"
-DJANGO_VITE_DEV_MODE = DEBUG
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / 'staticfiles' / 'dist'
+DJANGO_VITE_DEV_MODE = DEBUG and not ENVIROMENT == Environment.PRODUCTION
 DJANGO_VITE_DEV_SERVER_PORT = 5173
 
-INERTIA_LAYOUT = SETTINGS_DIR / "templates" / "index.html"
+INERTIA_LAYOUT = SETTINGS_DIR / 'templates' / 'index.html'
 
 # Vite generates files with 8 hash digits
 # http://whitenoise.evans.io/en/stable/django.html#WHITENOISE_IMMUTABLE_FILE_TEST
-WHITENOISE_IMMUTABLE_FILE_TEST = lambda path, url: re.match(r"^.+\.[0-9a-f]{8,12}\..+$", url)
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = "static/"
-
-# Output directory for collectstatic to put all your static files into.
-STATIC_ROOT = BASE_DIR / "staticfiles"
+WHITENOISE_IMMUTABLE_FILE_TEST = lambda path, url: re.match(r'^.+\.[0-9a-f]{8,12}\..+$', url)
 
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
 STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+}
