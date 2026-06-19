@@ -1,5 +1,6 @@
 # Dejavue
-Django + Vue boilerplate for fullstack monolith with SSR
+
+Django + Vue boilerplate for progressive fullstack monolith with SSR.
 
 
 ## Installation
@@ -12,7 +13,7 @@ uv
 
 ### Typescript dependencies
 ```sh
-pnpm install
+npm install
 ```
 
 ## Run development mode
@@ -38,5 +39,5 @@ Visit http://localhost:8000 to get a sample site.
 
 ```sh
 docker build -t dejavue:latest .
-docker run -e 8000 dejavue:latest
+docker run -p 80:8081 dejavue:latest
 ```

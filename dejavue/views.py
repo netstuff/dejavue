@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, asdict
 
+from django.http import HttpResponse
 from inertia import render
 
 
@@ -12,6 +13,11 @@ class GalleryPicture:
     title_en: str
     description: str
     wiki_link: str
+
+
+def healthcheck(request):
+    """Healthcheck endpoint."""
+    return HttpResponse("ok")
 
 
 def index(request):

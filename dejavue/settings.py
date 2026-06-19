@@ -16,17 +16,11 @@ import re
 from enum import Enum
 from logging import getLogger
 from pathlib import Path
-from typing import Literal
+from typing import cast, Literal
 
 logger = getLogger(__name__)
 
-
-class Environment(str, Enum):
-    """Environment types for the application."""
-
-    PRODUCTION = 'production'
-    DEVELOPMENT = 'development'
-    TEST = 'test'
+Environment = Literal['production', 'development', 'test']
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +36,7 @@ DEFAULT_SECRET = 'django-insecure-secret'
 SECRET_KEY = os.getenv('SECRET_KEY', DEFAULT_SECRET)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ENVIROMENT: Environment = Environment[os.getenv('ENV', 'development').upper()]
+ENVIRONMENT: Environment = cast(Environment, os.getenv('ENVIRONMENT', 'development').lower())
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 
@@ -154,7 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Vite settings
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / 'staticfiles' / 'dist'
-DJANGO_VITE_DEV_MODE = DEBUG and not ENVIROMENT == Environment.PRODUCTION
+DJANGO_VITE_DEV_MODE = not ENVIRONMENT == "production"
 DJANGO_VITE_DEV_SERVER_PORT = 5173
 
 INERTIA_LAYOUT = SETTINGS_DIR / 'templates' / 'index.html'

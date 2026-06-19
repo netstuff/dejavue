@@ -1,0 +1,13 @@
+.venv
+node_modules
+staticfiles
+static
+
+.env
+.env*
+.gitignore
+.gitlab-ci.yml
+.pre-commit-config.yaml
+Dockerfile
+
+*.sqlite3
