@@ -1,43 +1,23 @@
 # Dejavue
 
-Django + Vue boilerplate for progressive fullstack monolith with SSR.
+Шаблон прогрессивного монолита на Django + Inertia (Vuejs) настроенный на генерацию исходного кода с помощью ИИ.
 
 
-## Installation
+## Установка и запуск
 
-### Python dependencies
-
-```sh
-uv
-```
-
-### Typescript dependencies
-```sh
-npm install
-```
-
-## Run development mode
-
-### Django backend
-
-```sh
-uv run ./manage.py runserver
-```
-
-### Vuejs frontend
-
-```sh
-vite dev
-```
-
-Visit http://localhost:8000 to get a sample site.
+Инструкции по установке и запуску проекта расположены в файле [docs/INSTALL.md](docs/INSTALL.md)
 
 
-## Run production mode
+## Сценарий использования
 
-### Docker (WIP)
-
-```sh
-docker build -t dejavue:latest .
-docker run -p 80:8081 dejavue:latest
-```
+1. Склонируйте проект в локальную директорию: `git clone <repository_url>`
+2. Перейдите в директорию проекта: `cd dejavue`
+3. Установите все зависимости: `make install`
+4. Запустите приложение в режиме разработки: `make dev`
+5. Убедитесь, что приложение доступно локально по адресу `http://localhost:8000`
+6. Заполните описание проекта в файле [docs/PROJECT.md](docs/PROJECT.md)
+7. Запустите агента ИИ
+8. Выполните обучение агента введя запрос: `Загрузи инструкции @skills`
+9. Введите запрос на генерацию с указанием файла описания, например: `Сделай лендинг по описанию @docs/PROJECT.md`
+10. Убедитесь, что приложение по адресу `http://localhost:8000` обновилось
+11. Продолжайте работу с ИИ-агенгтом в свободной форме до достижения желаемого результата
