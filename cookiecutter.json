@@ -10,7 +10,11 @@
   "domain_name": "example.com",
   "author_name": "Yury Andreev",
   "author_email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
+
   "version": "0.1.0",
   "timezone": "UTC",
-  "language": "ru-RU"
+  "language": "ru-RU",
+
+  "frontend": ["vue", "react", "svelte"],
+  "existing_frontend": ""
 }
