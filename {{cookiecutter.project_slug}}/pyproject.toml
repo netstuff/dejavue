@@ -1,0 +1,17 @@
+[project]
+name = "{{cookiecutter.project_slug}}"
+version = "{{cookiecutter.version}}"
+description = "{{cookiecutter.description}}"
+authors = [
+    { name = "{{cookiecutter.author_name}}", email = "{{cookiecutter.author_email}}" }
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=5.2.7",
+    "django-vite>=3.1.0",
+    "inertia-django>=1.2.0",
+    "pillow>=12.1.1",
+    "whitenoise>=6.11.0",
+    "gunicorn>=23.0.0",
+]

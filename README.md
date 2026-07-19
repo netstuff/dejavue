@@ -1,22 +1,22 @@
 # Dejavue
 
-Шаблон прогрессивного монолита на Django + Inertia (Vuejs) настроенный на генерацию исходного кода с помощью ИИ.
+Powered by [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and [Django Vite](https://github.com/MrBin99/django-vite), Dejavue is a framework for quickly jumpstarting
+production-ready Inertia.js projects with Django and Vue.js inside.
+
+## Features
+
+- Monolithic app with SSR
+- For Django 6 and Vue 3
+- Works with Python 3.14
+- Works with Node.js 22
+- Full-featured SPA
+- Tailwind CSS with PrimeVue
+- Monolithic Docker deployment
+
+## Optional Integrations
+
+_These features can be enabled during initial project setup._
 
 
-## Установка и запуск
-
-Инструкции по установке и запуску проекта расположены в файле [docs/MANUAL.md](docs/MANUAL.md)
-
-
-## Сценарий использования
-
-1. Склонируйте проект в локальную директорию: `git clone <repository_url>`
-2. Перейдите в директорию проекта: `cd dejavue`
-3. Установите все зависимости: `make install`
-4. Запустите приложение в режиме разработки: `make dev`
-5. Убедитесь, что приложение доступно локально по адресу `http://localhost:8000`
-6. Заполните описание проекта в файле [docs/PROJECT.md](docs/PROJECT.md)
-7. Установите и настройте агента по [инструкции](docs/AGENT.md)
-8. Введите запрос на генерацию с указанием файла описания, например: `Сделай лендинг по описанию @docs/PROJECT.md`
-9. Убедитесь, что приложение по адресу `http://localhost:8000` обновилось
-10. Продолжайте работу с ИИ-агенгтом в свободной форме до достижения желаемого результата
+## Installation
+To get started with Dejavue, follow the [installation guide]().

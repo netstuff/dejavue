@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+
+# Common
+.env
+.venv
+.vscode
+.stuff
+.data
+
+# AI
+.claude
+.cursor
+.opencode
+
+# backend
+__pycache__
+/staticfiles
+*.sqlite
+*.sqlite3
+
+# frontend
+node_modules
+{{cookiecutter.project_slug}}/static/dist
