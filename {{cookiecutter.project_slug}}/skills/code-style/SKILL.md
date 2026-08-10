@@ -32,6 +32,18 @@ description: Naming and formatting conventions for Python (Ruff, snake_case, typ
   - `.vue` — однофайловые компоненты (SFC)
   - `.ts` — TypeScript-модули (композаблы, типы, утилиты)
 
+## TypeScript / React
+
+- **Форматирование**: Prettier или ESLint (добавить при необходимости)
+- **Типизация**: `strict` mode, интерфейсы через `interface`, алиасы через `type`
+- **Именование**:
+  - `camelCase` — переменные, функции, методы, props
+  - `PascalCase` — компоненты, интерфейсы, типы
+  - `snake_case` — только если зеркалирует Python-поле (пропсы из Inertia)
+- **Файлы**:
+  - `.tsx` — React-компоненты (JSX)
+  - `.ts` — TypeScript-модули (хуки, типы, утилиты)
+
 ## Django-специфика
 
 - `urls.py` — имена маршрутов в `snake_case` через `app_name=''`
@@ -41,7 +53,7 @@ description: Naming and formatting conventions for Python (Ruff, snake_case, typ
 
 ## Inertia-специфика
 
-- Имена страниц (аргумент `inertia.render`) — PascalCase, совпадают с именем Vue-файла: `'Index'` → `pages/Index.vue`
+- Имена страниц (аргумент `inertia.render`) — PascalCase, совпадают с именем компонента: `'Index'` → `pages/Index.vue` (Vue) или `components/Index.tsx` (React)
 - Пропсы — `snake_case` на сервере → `camelCase` на клиенте (конвертируется автоматически)
 - Имена маршрутов — `snake_case`
 

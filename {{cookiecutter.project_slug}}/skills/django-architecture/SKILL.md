@@ -24,7 +24,7 @@ description: Architecture principles of the Modern Monolith — single Django pr
 ## Поток запроса
 
 ```
-Browser → nginx :80 → Gunicorn :8000 → Django → Inertia render → Vue page
+Browser → nginx :80 → Gunicorn :8000 → Django → Inertia render → Vue/React page
                           ↑                            ↓
                      django-vite               Vite / staticfiles
 ```
@@ -32,7 +32,7 @@ Browser → nginx :80 → Gunicorn :8000 → Django → Inertia render → Vue p
 1. Браузер запрашивает `/` → nginx проксирует на Gunicorn
 2. Django обрабатывает, вызывает `inertia.render(request, 'PageName', props)`
 3. Inertia-django рендерит `templates/index.html` с data-атрибутами
-4. Клиентский Vue подхватывает и монтирует компонент `pages/PageName.vue`
+4. Клиентский фронтенд (Vue/React) подхватывает и монтирует компонент страницы
 5. Последующие переходы — Inertia-навигация (fetch без полной перезагрузки)
 
 ## Inertia вместо REST
@@ -43,13 +43,22 @@ Browser → nginx :80 → Gunicorn :8000 → Django → Inertia render → Vue p
 
 ## Структура страниц
 
+{% if cookiecutter.frontend == 'vue' %}
 ```
 frontend/pages/
   Index.vue       → inertia.render('Index', props)
-  Gallery.vue     → inertia.render('Gallery', props)
   Users/          → страницы, сгруппированные по домену
     Index.vue
     Edit.vue
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```
+frontend/app/components/
+  Index.tsx       → inertia.render('Index', props)
+  Users/          → страницы, сгруппированные по домену
+    Index.tsx
+    Edit.tsx
+```
+{% endif %}
 
-Название страницы во Vue-компоненте должно совпадать со строкой, переданной в `inertia.render()`.
+Название страницы в компоненте (Vue-файл / `tsx`-компонент) должно совпадать со строкой, переданной в `inertia.render()`.

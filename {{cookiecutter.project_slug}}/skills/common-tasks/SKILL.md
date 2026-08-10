@@ -17,6 +17,7 @@ def post_detail(request, pk):
     return render(request, 'Posts/Detail', {'post': post})
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
@@ -29,6 +30,28 @@ defineProps<{ posts: Post[] }>()
   </div>
 </template>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { Link } from '@inertiajs/react'
+
+interface Post { id: number; title: string; created_at: string }
+
+interface Props {
+  posts: Post[]
+}
+
+export default function PostsIndex({ posts }: Props) {
+  return (
+    <>
+      {posts.map(post => (
+        <div key={post.id}>
+          <Link href={`/posts/${post.id}`}>{post.title}</Link>
+        </div>
+      ))}
+    </>
+  )
+}
+{% endif %}
 
 ## CRUD — создание / редактирование
 
@@ -40,6 +63,7 @@ def post_create(request):
     return render(request, 'Posts/Create')
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
@@ -52,6 +76,38 @@ const form = useForm({ title: '', body: '' })
   </form>
 </template>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { useForm } from '@inertiajs/react'
+import { InputText } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+
+interface Props {
+  post?: { id: number; title: string; body: string }
+}
+
+export default function PostForm({ post }: Props) {
+  const { data, setData, post, processing, errors } = useForm({
+    title: post?.title ?? '',
+    body: post?.body ?? '',
+  })
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault()
+    post(post ? `/posts/${post.id}` : '/posts')
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <InputText value={data.title} onChange={e => setData('title', e.target.value)} />
+      {errors.title && <span>{errors.title}</span>}
+      <Button type="submit" disabled={processing}>Save</Button>
+    </form>
+  )
+}
+```
+{% endif %}
+
 
 ## CRUD — удаление
 
@@ -78,12 +134,29 @@ def login_view(request):
     return render(request, 'Login')
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { usePage, Link } from '@inertiajs/vue3'
 const auth = usePage().props.auth as { user: { id: number; name: string } | null }
 </script>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { usePage, Link } from '@inertiajs/react'
+
+export default function Login() {
+  const auth = usePage().props.auth as { user: { id: number; name: string } | null }
+
+  return auth.user ? (
+    <Link href={`/users/${auth.user.id}`}>{auth.user.name}</Link>
+  ) : (
+    <Link href="/login">Login</Link>
+  )
+}
+```
+{% endif %}
+
 
 ## Поиск / фильтрация
 
@@ -94,6 +167,7 @@ def post_list(request):
     return render(request, 'Posts/Index', {'posts': list(posts.values('id', 'title')), 'query': query})
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3'
@@ -101,6 +175,32 @@ const search = ref(props.query)
 function onSearch() { router.get('/posts', { q: search.value }, { preserveState: true }) }
 </script>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { router } from '@inertiajs/react'
+import { useState } from 'react'
+
+interface Props {
+  query: string
+}
+
+export default function PostsIndex({ query }: Props) {
+  const [search, setSearch] = useState(query)
+
+  function onSearch() {
+    router.get('/posts', { q: search }, { preserveState: true })
+  }
+
+  return (
+    <input
+      value={search}
+      onChange={e => setSearch(e.target.value)}
+      onKeyDown={e => e.key === 'Enter' && onSearch()}
+    />
+  )
+}
+```
+{% endif %}
 
 ## Пагинация
 

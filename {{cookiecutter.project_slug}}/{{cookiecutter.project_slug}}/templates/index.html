@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   {{ "{%" }} vite_hmr_client {{ "%}" }}
-  {{ "{%" }} vite_asset 'main.ts' {{ "%}" }}
+  {{ "{%" }} vite_asset '{{ "main.tsx" if cookiecutter.frontend == "react" else "main.ts" }}' {{ "%}" }}
 
   <title>{{cookiecutter.project_name}} — {{cookiecutter.description}}</title>
 </head>

@@ -14,13 +14,25 @@ def dashboard(request):
     return render(request, 'Dashboard', {'stats': stats})
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 defineProps<{ stats: { users_count: number; posts_count: number } }>()
 </script>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+interface Props {
+  stats: { users_count: number; posts_count: number }
+}
 
-Всегда указывай пропсы явно через `defineProps`.
+export default function Dashboard({ stats }: Props) {
+  return <div>{stats.users_count}</div>
+}
+```
+{% endif %}
+
+Всегда указывай пропсы явно: `defineProps` (Vue) или тип `Props` (React).
 
 ## Shared data
 
@@ -42,6 +54,7 @@ class ShareUserMiddleware:
 
 ## Навигация
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
@@ -53,9 +66,19 @@ import { Link } from '@inertiajs/vue3'
   <Link href="/users" method="post" as="button">Create</Link>
 </template>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { Link } from '@inertiajs/react'
+
+<Link href="/dashboard">Dashboard</Link>
+<Link href="/users" data={{ page: 2 }}>Page 2</Link>
+<Link href="/users" method="post" as="button">Create</Link>
+```
+{% endif %}
 
 ## Формы (useForm)
 
+{% if cookiecutter.frontend == 'vue' %}
 ```vue
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
@@ -70,6 +93,28 @@ function submit() { form.post('/posts', { onSuccess: () => form.reset() }) }
   </form>
 </template>
 ```
+{% elif cookiecutter.frontend == 'react' %}
+```tsx
+import { useForm } from '@inertiajs/react'
+
+export default function CreatePost() {
+  const { data, setData, post, processing, errors, reset } = useForm({ title: '', body: '' })
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault()
+    post('/posts', { onSuccess: () => reset() })
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <input value={data.title} onChange={e => setData('title', e.target.value)} />
+      {errors.title && <div>{errors.title}</div>}
+      <button disabled={processing}>Save</button>
+    </form>
+  )
+}
+```
+{% endif %}
 
 ## Редиректы после мутаций
 

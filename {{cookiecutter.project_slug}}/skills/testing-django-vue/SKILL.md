@@ -58,6 +58,7 @@ def test_post_creation(db):
     assert str(post) == 'Test'
 ```
 
+{% if cookiecutter.frontend == 'vue' %}
 ## Frontend (Vue)
 
 Фреймворк: **Vitest** + `@vue/test-utils` + `happy-dom`
@@ -73,6 +74,43 @@ export default defineConfig({
   test: { environment: 'happy-dom' },
 })
 ```
+{% elif cookiecutter.frontend == 'react' %}
+## Frontend (React)
+
+Фреймворк: **Vitest** + `@testing-library/react` + `jsdom`
+
+```bash
+npm install -D vitest @testing-library/react @testing-library/jest-dom jsdom
+```
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
+  },
+})
+```
+
+```typescript
+// vitest.setup.ts
+import '@testing-library/jest-dom/vitest'
+```
+
+```tsx
+// example: frontend/app/components/Counter.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import Counter from '@/components/Counter'
+
+test('increments count', () => {
+  render(<Counter />)
+  fireEvent.click(screen.getByRole('button'))
+  expect(screen.getByText('1')).toBeInTheDocument()
+})
+```
+{% endif %}
 
 Структура:
 

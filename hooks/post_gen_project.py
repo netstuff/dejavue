@@ -1,34 +1,32 @@
 import os
 
 from pathlib import Path
-from typing import Literal
+from typing import cast, Literal
 
 
-ExistingAppType = Literal["vue", "react", "svelte"]
+FrontendAppType = Literal["vue", "react"]
 
 
-def update_existing_app(path: str, app_type: ExistingAppType):
-    existing_app = Path(path)
-    if not existing_app.exists():
-        raise FileNotFoundError(f"Existing app not found: {path}")
-    match app_type:
-        case "vue":
-            raise NotImplementedError("Coming soon")
-        case "react":
-            raise NotImplementedError("React app type is not yet supported (use only Vue)")
-        case "svelte":
-            raise NotImplementedError("Svelte app type is not yet supported (use only Vue)")
+def setup_frontend(app_type: FrontendAppType):
+    frontend_dir = Path("frontend")
 
-
-def setup_frontend(frontend: str):
-    if existing_path := "{{ cookiecutter.existing_frontend }}":
-        update_existing_app(existing_path, frontend)
+    if app_type == "vue":
+        _remove_file(frontend_dir / "main.tsx")
+        _remove_file(frontend_dir / "pages" / "Index.tsx")
+    elif app_type == "react":
+        _remove_file(frontend_dir / "main.ts")
+        _remove_file(frontend_dir / "pages" / "Index.vue")
 
     os.system("npm install")
 
 
+def _remove_file(path: Path):
+    if path.exists():
+        path.unlink()
+
+
 def main():  # noqa: C901, PLR0912, PLR0915
-    setup_frontend("{{ cookiecutter.frontend }}")
+    setup_frontend(cast(FrontendAppType, "{{ cookiecutter.frontend }}"))
 
 
 if __name__ == "__main__":

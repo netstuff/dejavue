@@ -15,6 +15,6 @@
   "timezone": "UTC",
   "language": "ru-RU",
 
-  "frontend": ["vue", "react", "svelte"],
+  "frontend": ["auto", "vue", "react"],
   "existing_frontend": ""
 }

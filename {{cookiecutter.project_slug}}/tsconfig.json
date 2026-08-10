@@ -5,6 +5,9 @@
     "baseUrl": "./frontend",
     "paths": {
       "@/*": ["./*"]
-    }
+    }{% if cookiecutter.frontend == "react" %},
+    "jsx": "react-jsx",
+    "types": ["vite/client"]{% endif %}
+
   }
 }
