@@ -71,7 +71,7 @@ import { Link } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/react'
 
 <Link href="/dashboard">Dashboard</Link>
-<Link href="/users" data={{ page: 2 }}>Page 2</Link>
+<Link href="/users" data={% raw %}{{ page: 2 }}{% endraw %}>Page 2</Link>
 <Link href="/users" method="post" as="button">Create</Link>
 ```
 {% endif %}
@@ -88,7 +88,7 @@ function submit() { form.post('/posts', { onSuccess: () => form.reset() }) }
 <template>
   <form @submit.prevent="submit">
     <input v-model="form.title" />
-    <div v-if="form.errors.title">{{ form.errors.title }}</div>
+    <div v-if="form.errors.title">{% raw %}{{ form.errors.title }}{% endraw %}</div>
     <button :disabled="form.processing">Save</button>
   </form>
 </template>

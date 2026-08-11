@@ -1,12 +1,3 @@
----
-name: project-overview
-description: General description of the {{cookiecutter.project_slug}} fullstack monolith project — Django 5 + {{ front_title }} + Inertia.js + {{ ui_lib }} + Tailwind v4, goals, and stack overview.
----
-
-# {{cookiecutter.project_slug}} — Fullstack One-App Boilerplate
-
-## Стек
-
 {% set front_title %}
   {% if cookiecutter.frontend == 'vue' %}
     Vue 3
@@ -22,6 +13,15 @@ description: General description of the {{cookiecutter.project_slug}} fullstack 
     Radix UI (shadcn/ui)
   {% endif %}
 {% endset %}
+
+---
+name: project-overview
+description: General description of the {{cookiecutter.project_slug}} fullstack monolith project — Django 5 + {{ front_title }} + Inertia.js + {{ ui_lib }} + Tailwind v4, goals, and stack overview.
+---
+
+# {{cookiecutter.project_slug}} — Fullstack One-App Boilerplate
+
+## Стек
 
 | Слой      | Технология                                     |
 |-----------|-------------------------------------------------|

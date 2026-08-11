@@ -26,7 +26,7 @@ defineProps<{ posts: Post[] }>()
 </script>
 <template>
   <div v-for="post in posts" :key="post.id">
-    <Link :href="`/posts/${post.id}`">{{ post.title }}</Link>
+    <Link :href="`/posts/${post.id}`">{% raw %}{{ post.title }}{% endraw %}</Link>
   </div>
 </template>
 ```

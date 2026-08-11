@@ -38,7 +38,7 @@ CSP_IMG_SRC = ["'self'", "data:"]
 
 ## XSS
 
-- Django-шаблоны и Vue экранируют вывод через `{{ value }}`; React экранирует всё в JSX автоматически
+- Django-шаблоны и Vue экранируют вывод через `{% raw %}{{ value }}{% endraw %}`; React экранирует всё в JSX автоматически
 - `v-html` (Vue) / `dangerouslySetInnerHTML` (React) использовать только с доверенным контентом + DOMPurify
 - UI-компоненты (PrimeVue/shadcn) экранируют текст
 

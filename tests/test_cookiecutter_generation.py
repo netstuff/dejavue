@@ -255,12 +255,14 @@ def test_pre_gen_accepts_valid_slug(cookies) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def test_skills_are_not_rendered(cookies) -> None:
-    result = cookies.bake()
+def test_skills_are_rendered(cookies) -> None:
+    result = cookies.bake(extra_context={"frontend": "vue"})
 
     assert result.exit_code == 0, result.exception
     common = read_text(result.project_path / "skills" / "common-tasks" / "SKILL.md")
-    assert "{% if cookiecutter.frontend == 'vue' %}" in common
+    assert "{%" not in common
+    assert "@inertiajs/vue3" in common
+    assert "@inertiajs/react" not in common
 
 
 def test_agents_md_is_rendered(cookies) -> None:
@@ -270,3 +272,12 @@ def test_agents_md_is_rendered(cookies) -> None:
     agents = read_text(result.project_path / "AGENTS.md")
     assert "{{cookiecutter.project_slug}}" not in agents
     assert "blog/" in agents
+
+
+def test_manual_md_is_rendered(cookies) -> None:
+    result = cookies.bake(extra_context={"project_name": "Blog"})
+
+    assert result.exit_code == 0, result.exception
+    manual = read_text(result.project_path / "docs" / "MANUAL.md")
+    assert "{{cookiecutter.project_slug}}" not in manual
+    assert "docker build -t blog:latest ." in manual
