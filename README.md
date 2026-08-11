@@ -1,22 +1,26 @@
 # Dejavue
 
-Powered by [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and [Django Vite](https://github.com/MrBin99/django-vite), Dejavue is a framework for quickly jumpstarting
-production-ready Inertia.js projects with Django and Vue.js inside.
+Dejavue — фреймворк на базе [Cookiecutter](https://github.com/cookiecutter/cookiecutter) и [Django Vite](https://github.com/MrBin99/django-vite) для быстрого создания production-ready проектов на Inertia.js с Django и Vue.js внутри (поддерживается также React).
 
-## Features
+## Возможности
 
-- Monolithic app with SSR
-- For Django 6 and Vue 3
-- Works with Python 3.14
-- Works with Node.js 22
-- Full-featured SPA
-- Tailwind CSS with PrimeVue
-- Monolithic Docker deployment
+- Монолитное приложение с SSR
+- Для Django 6 и Vue 3 (или React 18)
+- Работает на Python 3.14
+- Работает на Node.js 22
+- Полнофункциональное SPA
+- Tailwind CSS с PrimeVue (только для Vue)
+- Монолитное Docker-развёртывание
 
-## Optional Integrations
+## Опциональные интеграции
 
-_These features can be enabled during initial project setup._
+_Эти функции можно включить на этапе начальной настройки проекта._
 
 
-## Installation
-To get started with Dejavue, follow the [installation guide]().
+## Установка
+
+Чтобы начать работу с Dejavue, следуйте [инструкции по созданию проекта](docs/RU/setup.md).
+
+## Развертывание
+
+Инструкция по развертыванию проекта, созданного с помощью [cruft](https://github.com/cruft/cruft): [docs/RU/deployment.md](docs/RU/deployment.md).
