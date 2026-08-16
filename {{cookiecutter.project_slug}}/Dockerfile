@@ -70,5 +70,7 @@ EXPOSE 8081
 
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/supervisord.conf /etc/supervisord.conf
+COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
