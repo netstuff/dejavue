@@ -1,0 +1,18 @@
+{
+  "_copy_without_render": [
+    "frontend/*"
+  ],
+
+  "project_name": "My app",
+  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "description": "Dejavue progressive monolithic app with Django and Vue inside",
+  "domain_name": "example.com",
+  "author_name": "Имярек",
+  "author_email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
+
+  "version": "0.1.0",
+  "timezone": "UTC",
+  "language": "ru-RU",
+
+  "frontend": ["auto", "vue", "react"]
+}
