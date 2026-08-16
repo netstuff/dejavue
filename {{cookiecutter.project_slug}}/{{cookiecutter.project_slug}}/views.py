@@ -2,17 +2,11 @@
 
 from dataclasses import dataclass, asdict
 
-from django.http import HttpResponse
+from django.db import connection
+from django.db.migrations.loader import MigrationLoader
+from django.db.migrations.recorder import MigrationRecorder
+from django.http import HttpResponse, JsonResponse
 from inertia import render
-
-
-@dataclass
-class GalleryPicture:
-    url: str
-    title: str
-    title_en: str
-    description: str
-    wiki_link: str
 
 
 def healthcheck(request):
@@ -20,37 +14,32 @@ def healthcheck(request):
     return HttpResponse("ok")
 
 
+def liveness(request):
+    """Liveness probe: process is up and can respond."""
+    return JsonResponse({"status": "alive"})
+
+
+def readiness(request):
+    """Readiness probe: process can serve traffic (DB reachable, migrations applied)."""
+    try:
+        connection.ensure_connection()
+        recorder = MigrationRecorder.Migration.objects
+        applied = set(recorder.values_list('app', 'name'))
+        loader = MigrationLoader(connection)
+        pending = [
+            key for key in loader.graph.leaf_nodes()
+            if key not in applied
+        ]
+        if pending:
+            return JsonResponse(
+                {"status": "not_ready", "error": f"pending migrations: {pending}"},
+                status=503,
+            )
+    except Exception as exc:
+        return JsonResponse({"status": "not_ready", "error": str(exc)}, status=503)
+    return JsonResponse({"status": "ready"})
+
+
 def index(request):
     """Index page with simple SPA."""
     return render(request, "Index", props={"name": "{{cookiecutter.project_name}}"})
-
-
-def gallery(request):
-    """Simple SPA gallery on separate page."""
-    pictures = [
-        GalleryPicture(
-            url="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Russo-Balt_С24_55_ralli_monte-karlo_1911-1912.jpg/500px-Russo-Balt_С24_55_ralli_monte-karlo_1911-1912.jpg",
-            title="Руссо-Балт",
-            title_en="Russo-Balt",
-            description="A first russian automobile (1912).",
-            wiki_link="https://en.wikipedia.org/wiki/Russo-Balt",
-        ),
-        GalleryPicture(
-            url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Novik%28EM%291.jpg/2880px-Novik%28EM%291.jpg",
-            title="Новик",
-            title_en="Novice",
-            description="One of the best destroyers (1915).",
-            wiki_link="https://en.wikipedia.org/wiki/Russian_destroyer_Novik",
-        ),
-        GalleryPicture(
-            url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Sikorsky_Ilya_Muromets_S-27_E_%28Yeh-2%29_bomber_%2819759078469%29.jpg/960px-Sikorsky_Ilya_Muromets_S-27_E_%28Yeh-2%29_bomber_%2819759078469%29.jpg",
-            title="Илья Муромец",
-            title_en="Ilya Murometz",
-            description="The only one in the world (at the time of the First World War) heavy bambardier.",
-            wiki_link="https://ru.wikipedia.org/wiki/Илья_Муромец_(самолёт)",
-        ),
-    ]
-
-    return render(request, "Gallery", props={
-        "pictures": list(map(asdict, pictures)),
-    })

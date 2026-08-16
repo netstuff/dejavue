@@ -43,7 +43,7 @@ def test_default_generation(cookies) -> None:
     assert result.exception is None
     assert result.project_path.name == "my_app"
     assert (result.project_path / "manage.py").is_file()
-    assert result.context["frontend"] == "auto"
+    assert result.context["frontend"] == "none"
 
 
 # --------------------------------------------------------------------------- #
@@ -76,6 +76,20 @@ def test_author_email_derivation(cookies) -> None:
 
     assert result.exit_code == 0, result.exception
     assert result.context["author_email"] == "yury-andreev@example.com"
+
+
+def test_docker_registry_derivation(cookies) -> None:
+    result = cookies.bake(extra_context={"project_name": "Blog"})
+
+    assert result.exit_code == 0, result.exception
+    assert result.context["docker_registry"] == "blog"
+
+
+def test_docker_platform_default(cookies) -> None:
+    result = cookies.bake(extra_context={"project_name": "Blog"})
+
+    assert result.exit_code == 0, result.exception
+    assert result.context["docker_platform"] == "linux/amd64"
 
 
 # --------------------------------------------------------------------------- #
@@ -210,7 +224,7 @@ def test_tsconfig_jsx(cookies, frontend) -> None:
 
 
 def test_frontend_auto_keeps_both_entries(cookies) -> None:
-    result = cookies.bake(extra_context={"frontend": "auto"})
+    result = cookies.bake(extra_context={"frontend": "none"})
 
     assert result.exit_code == 0, result.exception
     assert (result.project_path / "frontend" / "main.ts").is_file()
@@ -218,6 +232,70 @@ def test_frontend_auto_keeps_both_entries(cookies) -> None:
     package = json.loads(read_text(result.project_path / "package.json"))
     assert "@inertiajs/vue3" not in package["dependencies"]
     assert "@inertiajs/react" not in package["dependencies"]
+
+
+# --------------------------------------------------------------------------- #
+# Docker commands
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize(
+    ("platform", "registry", "expected_build"),
+    [
+        ("linux/amd64", "blog", "docker build --platform=linux/amd64 -t blog:latest ."),
+        ("linux/amd64", "blog", "docker build --platform=linux/amd64 -t blog:latest ."),
+        (
+            "linux/amd64",
+            "registry.example.com/blog",
+            "docker build --platform=linux/amd64 -t registry.example.com/blog:latest .",
+        ),
+    ],
+)
+def test_makefile_build_docker_rendered(
+    cookies, platform, registry, expected_build,
+) -> None:
+    result = cookies.bake(
+        extra_context={
+            "project_name": "Blog",
+            "docker_platform": platform,
+            "docker_registry": registry,
+        },
+    )
+
+    assert result.exit_code == 0, result.exception
+    makefile = read_text(result.project_path / "Makefile")
+    assert expected_build in makefile
+    assert "{{ cookiecutter.docker_platform }}" not in makefile
+    assert "{{ cookiecutter.docker_registry }}" not in makefile
+
+
+def test_makefile_docker_platform_override(cookies) -> None:
+    result = cookies.bake(
+        extra_context={"project_name": "Blog", "docker_platform": "linux/amd64"},
+    )
+
+    assert result.exit_code == 0, result.exception
+    makefile = read_text(result.project_path / "Makefile")
+    assert "docker build --platform=linux/amd64 -t blog:latest ." in makefile
+
+
+def test_makefile_release_docker_rendered(cookies) -> None:
+    result = cookies.bake(
+        extra_context={"project_name": "Blog", "docker_registry": "registry.example.com/blog"},
+    )
+
+    assert result.exit_code == 0, result.exception
+    makefile = read_text(result.project_path / "Makefile")
+    assert "docker push registry.example.com/blog:latest" in makefile
+    assert "{{ cookiecutter.docker_registry }}" not in makefile
+
+
+def test_manual_md_docker_run_rendered(cookies) -> None:
+    result = cookies.bake(extra_context={"project_name": "Blog"})
+
+    assert result.exit_code == 0, result.exception
+    manual = read_text(result.project_path / "docs" / "MANUAL.md")
+    assert "docker run -p 80:8081 blog:latest" in manual
 
 
 # --------------------------------------------------------------------------- #

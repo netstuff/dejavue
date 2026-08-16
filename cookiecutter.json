@@ -14,5 +14,8 @@
   "timezone": "UTC",
   "language": "ru-RU",
 
-  "frontend": ["auto", "vue", "react"]
+  "frontend": ["none", "vue", "react"],
+
+  "docker_registry": "{{ cookiecutter.project_slug }}",
+  "docker_platform": "linux/amd64"
 }

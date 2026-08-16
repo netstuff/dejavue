@@ -220,6 +220,18 @@ build-backend: install-backend                      ## Build backend artifacts (
 	@uv run ./manage.py collectstatic --noinput --clear >/dev/null 2>&1
 	@echo "$(OK) Backend built"
 
+.PHONY: build-docker
+build-docker:                      					## Build docker image
+	@echo "$(INFO) Building Docker image..."
+	@docker build --platform={{ cookiecutter.docker_platform }} -t {{ cookiecutter.docker_registry }}:latest .
+	@echo "$(OK) Docker built"
+
+.PHONY: release-docker
+release-docker: build-docker                        ## Build docker image and push it to registry
+	@echo "$(INFO) Release Docker image..."
+	@docker push {{ cookiecutter.docker_registry }}:latest
+	@echo "$(OK) Docker image pushed"
+
 .PHONY: release
 release: build-frontend build-backend               ## Release application (bump version, build frontend + backend)
 	@echo "$(INFO) Preparing release..."
